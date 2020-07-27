@@ -11,8 +11,8 @@ from models import Usuarios
 
 @app.route("/")
 def index ():
-    if "dni" in session and "tipo" in session:
-        return render_template('index.html')
+    if "DNI" in session and "Tipo" in session:
+        return render_template('index.html', Tipo = escape(session['Tipo']), DNI = escape(session['DNI']) )
     return redirect(url_for('login'))
 
 @app.route("/login")
@@ -23,13 +23,14 @@ def login ():
 def LOGIN ():
     if request.method == "POST":
         if request.form["dni"] and request.form["password"]:
-            usuario = Usuarios.query.filter_by(DNI=request.form['dni'])
+            usuario = Usuarios.query.filter_by(DNI=request.form['dni']).first()
             if type(usuario) is not None:
                 pasaword = request.form["dni"]
                 result = hashlib.md5(bytes(pasaword, encoding='utf-8'))
-                if Usuarios.Clave == result.hexdigest():
-                    session['dni'] = usuario.DNI
-                    session['tipo'] = usuario.Tipo
+                if usuario.Clave == result.hexdigest():
+                    session['DNI'] = usuario.DNI
+                    session['Tipo'] = usuario.Tipo
+                    print("ENTRE")
                     return redirect(url_for('index'))
                 else:
                     return redirect(url_for('login'))
