@@ -1,0 +1,19 @@
+{% extends "base_template.html" %}
+{% block title %} Ingreso {% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/EstiloWeb.css') }}">
+<h2 style="width: 100%; margin-left:40%"> Bienvenido {{ mensaje }} </h2>
+<h2 style="width: 80%; margin-left:20%"> FUNCIONALIDADES: </h2>
+{%if Tipo == 'Mozo'%}
+<ul>    
+    <li style="width: 80%; margin-left: 20%;"> <a href="{{ url_for('registarPedido')}}">Crear un Nuevo Pedido</a> </li>
+    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="">Listar pedidos vigentes</a> </li>
+    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="">Registrar el cobro de un pedido</a> </li>
+</ul>
+
+{%elif Tipo == 'Cocinero'%}
+   <a href="{{url_for('Listado')}}">ngfnhgfh</a> 
+{%endif%}
+
+
+{% endblock %}
