@@ -1,5 +1,5 @@
 from flask import Flask,escape,render_template,session, url_for, request, redirect
-from datetime import datetime
+import datetime
 from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 import hashlib
@@ -7,12 +7,12 @@ import hashlib
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
-from models import Usuarios
+from models import Usuarios,Pedidos, ItemsPedidos, Productos, basedatos
 
 @app.route("/")
 def index ():
     if "DNI" in session and "Tipo" in session:
-        return render_template('index.html', Tipo = escape(session['Tipo']), DNI = escape(session['DNI']) )
+        return render_template('principal.html', Tipo = escape(session['Tipo']))#, DNI = escape(session['DNI']) )
     return redirect(url_for('login'))
 
 @app.route("/login")
@@ -38,6 +38,47 @@ def LOGIN ():
                 return redirect(url_for('login'))
     else:
         return redirect(url_for('index'))
+
+@app.route("/registrarPedido")
+def registarPedido ():
+    if "DNI" in session:
+        if session["Tipo"] == "Mozo":
+            productos = Productos.query.all()
+            return render_template('registar_pedido_mozo.html', productos=productos)
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/nuevopedido", methods=["POST"])
+def nuevopedido ():
+    if request.method == "POST":
+        if "DNI" in session and "Tipo" in session:
+            if session["Tipo"] == 'Mozo':
+                items = request.form['items']
+                items = items.split(",")
+                pedido_nuevo = Pedidos(Fecha = datetime.date.today(), Total = request.form['total'], Cobrado = False, Observacion=request.form['observacion'], Mesa = request.form['Mesa'],  DniMozo = escape(session["DNI"]))
+                basedatos.session.add(pedido_nuevo)
+                basedatos.session.commit()
+                for item in items:
+                    producto = Productos.query.filter_by(NumProducto = int(item))
+                    if producto is None:
+                        return redirect(url_for('registarPedido'))
+                    else:
+                        nuevo_item = ItemsPedidos(NumPedido=pedido_nuevo.NumPedido, NumProducto=item, Precio=producto.PrecioUnitario, Estado="Pendiente")
+                        basedatos.session.add(nuevo_item)
+                basedatos.session.commit()
+                redirect(url_for('registarPedido'))
+        else:
+            return redirect(url_for('login'))
+
+@app.route("/listado_pedidos")
+def Listado ():
+    if "DNI" in session and "Tipo" in session:
+        if escape(session['Tipo']) == "Cocinero":
+            item = ItemsPedidos.query.filter_by(Estado = "Pendiente")
+            print(item)
+            return "JSDLAFNJLASBFKJBSJBF"
+
+
 
 
 if __name__ == "__main__":
