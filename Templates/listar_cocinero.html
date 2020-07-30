@@ -1,0 +1,57 @@
+{% extends "base_template.html" %}
+{% block title %} Ingreso {% endblock %}
+{% block content %}
+<div style="width: 50%; margin: auto;">
+    <h1 style="text-align: center; padding: 2rem;">
+        Pedidos Pendientes
+    </h1>
+    <br>
+    <ul class="list-group-flush" style="overflow-y: scroll; display: block;">
+        {% if pedidos %}
+        {% for pedido in pedidos %}
+        <li style="width: 50%; margin: auto;">
+            <div class="d-flex w-100 justify-content-between pedido" style="height: 33px;">
+                <h5> Pedido {{ pedido.NumPedido }} </h5>
+                <h5> Mesa {{ pedido.Mesa }}</h5>
+            </div>
+            
+            {% for item in items %}
+            
+            <p> {{ item.producto.Nombre }}<span >{{ item.NumItem}}</span></p>
+            {%  endfor %}
+
+            {% if pedido.Observacion != "" %}<small>Observacíon:
+                {{ pedido.Observacion }}</small> <br>{% endif %}
+
+            <small>Mozo {{ pedido.DniMozo }}</small>
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="list-group-item" style="height: 150px; min-height: 100px; max-height: 200px;">
+            <h1 style="text-align: center; font-size: 2rem;">No se han encontrado pedidos pendientes</h1>
+        </li>
+        {% endif %}
+    </ul>
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="d-flex w-100 justify-content-between pedido" style="height: 33px;">
+                <h5 class="mb-1" id="tituloModal">Pedido</h5>
+                <h5 class="text-muted" id="tituloMesa">Mesa</h5>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="{{url_for('Listar')}}" method="post" id="estado-form">
+            <div class="modal-body">
+                <span class="d-none">Aux</span>
+            </div>
+            <input type="text" class="d-none">
+            <div class="modal-footer">
+                <button type="button" style="color: #fff; font-family: 'Montserrat', sans-serif; background-color: #ed145a;"> Cancelar</button>
+                <button type="submit" style="color: #fff; font-family: 'Montserrat', sans-serif; background-color: #14edd0;"> Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
