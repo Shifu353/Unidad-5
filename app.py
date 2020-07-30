@@ -2,12 +2,20 @@ from flask import Flask,escape,render_template,session, url_for, request, redire
 import datetime
 from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import distinct
 import hashlib
 
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
-from models import Usuarios,Pedidos, ItemsPedidos, Productos, basedatos
+from models import ItemsPedidos,Pedidos, Productos, Usuarios, basedatos
+
+@app.before_request
+def Berfore ():
+    if "DNI" in session and "Tipo" in session:
+        pendientes = basedatos.session.query(distinct(ItemsPedidos.NumPedido)).join(Pedidos).\
+            filter(ItemsPedidos.Estado=="Pendiente").count()
+        session['pendientes'] = pendientes
 
 @app.route("/")
 def index ():
@@ -55,7 +63,7 @@ def nuevopedido ():
             if session["Tipo"] == 'Mozo':
                 items = request.form['items']
                 items = items.split(",")
-                pedido_nuevo = Pedidos(Fecha = datetime.date.today(), Total = request.form['total'], Cobrado = False, Observacion=request.form['observacion'], Mesa = request.form['Mesa'],  DniMozo = escape(session["DNI"]))
+                pedido_nuevo = Pedidos(Fecha = datetime.date.today(), Total = request.form['total'], Cobrado = bool(False), Observacion=request.form['observacion'], Mesa = request.form['Mesa'],  DniMozo = escape(session["DNI"]))
                 basedatos.session.add(pedido_nuevo)
                 basedatos.session.commit()
                 for item in items:
@@ -70,14 +78,31 @@ def nuevopedido ():
         else:
             return redirect(url_for('login'))
 
+
 @app.route("/listado_pedidos")
 def Listado ():
     if "DNI" in session and "Tipo" in session:
         if escape(session['Tipo']) == "Cocinero":
-            item = ItemsPedidos.query.filter_by(Estado = "Pendiente")
-            print(item)
-            return "JSDLAFNJLASBFKJBSJBF"
+            q = basedatos.session.query(Pedidos).join(ItemsPedidos).\
+                filter(ItemsPedidos.Estado == "Pendiente").all()
+            """s = basedatos.session.query(Pedidos).join(ItemsPedidos).\
+                filter(ItemsPedidos.Estado == "Pendiente").count()"""
+            #print(escape(session['pendientes']))
+            #return "jndfjlsndfjlndsajl"
+            for i in q:
+                print(i.DniMozo.Clave)
+            return render_template("listar_cocinero.html", pedidos = q, items=ItemsPedidos.query.filter_by(Estado = "Pendiente").all())
+        
+        #Mandarlo al logout    
 
+@app.route("/listado_pedidos", methods=["POST"])
+def Listar ():
+    if "DNI" in session and "Tipo" in session:
+        if escape(session['Tipo']) == "Cocinero":
+            if request.method == 'POST':
+                itemped = request.form.getlist("id-item")
+                print(itemped)
+                return "NDSALKNDLKSANDKLSANKDLNALaksdnkslan"
 
 
 
