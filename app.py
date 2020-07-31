@@ -10,22 +10,18 @@ app.config.from_pyfile("config.py")
 
 from models import ItemsPedidos,Pedidos, Productos, Usuarios, basedatos
 
-@app.before_request
-def Berfore ():
-    if "DNI" in session and "Tipo" in session:
-        pendientes = basedatos.session.query(distinct(ItemsPedidos.NumPedido)).join(Pedidos).\
-            filter(ItemsPedidos.Estado=="Pendiente").count()
-        session['pendientes'] = pendientes
-
 @app.route("/")
 def index ():
     if "DNI" in session and "Tipo" in session:
-        return render_template('principal.html', Tipo = escape(session['Tipo']))#, DNI = escape(session['DNI']) )
-    return redirect(url_for('login'))
+        return render_template('principal.html', Tipo = escape(session['Tipo']))
+    return render_template('principal.html')
 
 @app.route("/login")
 def login ():
-    return render_template("login.html")
+    if "DNI" in session:
+        return render_template("index.html")
+    else:
+        return redirect(url_for('login.html'))
 
 @app.route("/login", methods=['POST'])
 def LOGIN ():
@@ -38,7 +34,6 @@ def LOGIN ():
                 if usuario.Clave == result.hexdigest():
                     session['DNI'] = usuario.DNI
                     session['Tipo'] = usuario.Tipo
-                    print("ENTRE")
                     return redirect(url_for('index'))
                 else:
                     return redirect(url_for('login'))
@@ -46,6 +41,16 @@ def LOGIN ():
                 return redirect(url_for('login'))
     else:
         return redirect(url_for('index'))
+
+
+@app.route('/logout')
+def Logout():
+    session.pop('DNI')
+    session.pop('Tipo')
+    listapedidos.clear()
+    listaprecios.clear()
+    return render_template("login.html")
+
 
 @app.route("/registrarPedido")
 def registarPedido ():
@@ -85,15 +90,14 @@ def Listado ():
         if escape(session['Tipo']) == "Cocinero":
             q = basedatos.session.query(Pedidos).join(ItemsPedidos).\
                 filter(ItemsPedidos.Estado == "Pendiente").all()
-            """s = basedatos.session.query(Pedidos).join(ItemsPedidos).\
-                filter(ItemsPedidos.Estado == "Pendiente").count()"""
-            #print(escape(session['pendientes']))
-            #return "jndfjlsndfjlndsajl"
             for i in q:
-                print(i.DniMozo.Clave)
-            return render_template("listar_cocinero.html", pedidos = q, items=ItemsPedidos.query.filter_by(Estado = "Pendiente").all())
+                print(i.item_pedido)
+            return render_template("listar_cocinero.html", pedidos = q)
         
-        #Mandarlo al logout    
+        else:
+            return redirect(url_for("Logout"))    
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/listado_pedidos", methods=["POST"])
 def Listar ():
@@ -101,10 +105,20 @@ def Listar ():
         if escape(session['Tipo']) == "Cocinero":
             if request.method == 'POST':
                 itemped = request.form.getlist("id-item")
-                print(itemped)
-                return "NDSALKNDLKSANDKLSANKDLNALaksdnkslan"
+        else:
+            return redirect(url_for('Logout'))
+    else:
+        return redirect(url_for('login'))            
 
-
-
+@app.route("/listado_Mozo")
+def listado_Mozo ():
+    if "DNI" in session and "Tipo" in session:
+        if escape(session['Tipo'])=="Mozo":
+            fecha_de_hoy = datetime.date.today()
+            pedido = Pedidos.query.filter_by(Fecha = fecha_de_hoy, Cobrado=False).all()
+        else:
+            return redirect(url_for('Logout'))
+    else:
+        return redirect(url_for('login'))
 if __name__ == "__main__":
     app.run(debug=True)
