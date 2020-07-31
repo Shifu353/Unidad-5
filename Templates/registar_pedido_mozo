@@ -3,34 +3,37 @@
 <div id="Registro">
     <div class="container" style="margin: auto; margin-top: 70px;height: 100%;">
         <div class="row" style="display: flex;">
-            <div class="column" style="flex: 50%; padding: 10px;height: 300px;">
-                <form style="text-align: center; border-radius: 90px; width: 500px;" action="{{ url_for('nuevopedido') }}" method="POST">
-                    <label for="Mesa" class="justify-center" >Ingrese Numero de Mesa</label>
-                    <input type="text" name="Mesa">
+            <div class="column" style="flex: 50%; padding: 10px;height: 300px; max-height: 300px;">
+                <!-- ************FORM LISTA PEDIDOS ***************  -->
+                <form style="text-align: center; border-radius: 90px; width: 500px;"
+                    action="{{ url_for('Nuevopedido') }}" method="POST">
+                    <label for="Mesa" class="justify-center">Ingrese Numero de Mesa</label>
+                    <input type="number" name="Mesa">
                     <div class="justify-content-center align-self-center w-100">
-                        <h1 style="text-align: center;"> 
-                            Orden - Total : $ </h1>
+                        <h1 style="text-align: center;">
+                            Orden - Total : $ {{ total }} </h1>
                         <ul class="list-group-flush order-list" style="overflow-y: scroll; display: block;">
-                            <li class="list-group-item null-item">
-                                <a id=producto>Esperando Pedido</a>
-                                <span class="badge badge-success badge-pill float-right">$</span>
+
+                            {% if listaNom %}
+                            {% for nombre in listaNom %}
+                            <li class="list-group-item">
+                                <p> {{nombre}} </p>
                             </li>
-                            <li class="list-group-item null-item">
-                                <label for="">Esperando producto</label>
-                                <span class="badge badge-success badge-pill float-right">$</span>
-                            </li>
-                            <li class="list-group-item null-item">
-                                -
-                                <span class="badge badge-success badge-pill float-right">$</span>
-                            </li>                    
-                        </ul> 
+                            {% endfor %}
+                            {% else %}
+                                {% if listaNom == '' %}
+                                <li class="list-group-item">
+                                    <a> Esperando pedidos </a>
+                                </li>
+                                {%endif%}
+                            {% endif %}
+                        </ul>
                     </div>
                     <label for="observacion" style="bottom:85px;">Observacion del Pedido</label>
                     <input type="text" name="items" id="items-number" class="d-none">
                     <input type="number" name="total" id="total" class="d-none">
-                    <input type="text" name="observacion" id="observacion" style="bottom:90px; right: 100px;"></input>
+                    <input type="text" name="observacion" id="observacion" style="bottom:90px; right: 100px;">
                     <button type="submit" id="confirmar" style="bottom:100px;">Confirmar pedido</button>
-                </form>
             </div>
             <div class="column" style="flex: 50%; padding: 10px;height: 300px;">
                 <div style="text-align: center;">
@@ -38,11 +41,11 @@
                     <ul class="list-group-flush">
                         {% if productos %}
                         {% for producto in productos %}
-                        <li class="list-group-item"><a href="">
-                            {{producto.Nombre}}
-                            {{ producto.NumProducto }}
-                            $ {{producto.PrecioUnitario}}
-                        </a></li>
+                        <li class="list-group-item">
+                            <a href="{{ url_for ( 'Listar',nombre= producto.Nombre,precio=producto.PrecioUnitario ) }}">
+                                {{producto.Nombre}} --> ${{producto.PrecioUnitario}}
+                            </a>
+                        </li>
                         {% endfor %}
                         {% else %}
                         <li class="list-group-item">
@@ -52,8 +55,10 @@
                     </ul>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </div>
+<a href="{{url_for('Logout')}}"> <span class="logout"> <i class="icon icon-phone"> </i> </span> Salir </a>
 
 {% endblock %}
