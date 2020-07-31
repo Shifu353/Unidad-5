@@ -15,9 +15,8 @@
                 <h5> Mesa {{ pedido.Mesa }}</h5>
             </div>
             
-            {% for item in items %}
-            
-            <p> {{ item.producto.Nombre }}<span >{{ item.NumItem}}</span></p>
+            {% for item in pedido.item_pedido %}
+            <p> {{ item.producto.Nombre }}<span class="d-none id-item">{{ item.NumItem}}</span></p>
             {%  endfor %}
 
             {% if pedido.Observacion != "" %}<small>Observacíon:
@@ -42,7 +41,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="{{url_for('Listar')}}" method="post" id="estado-form">
+        <form action="{{url_for('Listar')}}" method="POST" id="estado-form">
             <div class="modal-body">
                 <span class="d-none">Aux</span>
             </div>
