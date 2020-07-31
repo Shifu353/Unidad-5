@@ -7,7 +7,7 @@
 {%if Tipo == 'Mozo'%}
 <ul>    
     <li style="width: 80%; margin-left: 20%;"> <a href="{{ url_for('registarPedido')}}">Crear un Nuevo Pedido</a> </li>
-    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="">Listar pedidos vigentes</a> </li>
+    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="{{ url_for('listado_Mozo')}}">Listar pedidos vigentes</a> </li>
     <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="">Registrar el cobro de un pedido</a> </li>
 </ul>
 
