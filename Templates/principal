@@ -2,17 +2,17 @@
 {% block title %} Ingreso {% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/EstiloWeb.css') }}">
-<h2 style="width: 100%; margin-left:40%"> Bienvenido {{ mensaje }} </h2>
+<h2 style="width: 100%; margin-left:40%"> Bienvenido {{ Tipo }} </h2>
 <h2 style="width: 80%; margin-left:20%"> FUNCIONALIDADES: </h2>
 {%if Tipo == 'Mozo'%}
 <ul>    
     <li style="width: 80%; margin-left: 20%;"> <a href="{{ url_for('registarPedido')}}">Crear un Nuevo Pedido</a> </li>
-    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="{{ url_for('listado_Mozo')}}">Listar pedidos vigentes</a> </li>
-    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="">Registrar el cobro de un pedido</a> </li>
+    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="{{ url_for('ListarCocinero')}}">Listar pedidos vigentes</a> </li>
+    <li style="width: 80%; margin-left: 20%;"> <a style="width: 80%; margin-right:20%" href="">Este No va</a> </li>
 </ul>
 
 {%elif Tipo == 'Cocinero'%}
-   <a href="{{url_for('Listado')}}">ngfnhgfh</a> 
+   <a href="{{url_for('ListarCocinero')}}">Marcar pidido como Listo</a> 
 {%endif%}
 
 
