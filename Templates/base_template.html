@@ -12,7 +12,41 @@
 <header>
     <nav>
         <ul>
-            <li> <a href="http://localhost:5000/ingresar"> <span class="Inic "> <i class="icon icon-home3"> </i> </span> Inicio </a> </li>
+            <li> <a href=""> <span class="Inic "> <i class="icon icon-home3"> </i> </span> Inicio </a> </li>
+            <li> <a href=""> <span class="Categ"> <i class="icon icon-price-tag"> </i> </span> Categoria </a>
+                <ul>
+                    <li> <a href="http://www.google.com"> 1. Google </a> </li>
+                    <li> <a href=""> 2. Wikipedia </a> </li>
+                    <ul>
+                        <li> <a href="http://www.google.com"> 1. Google </a> </li>
+                        <li> <a href=""> 2. Wikipedia </a> </li>
+                        <li> <a href=""> 3. Facebook </a> </li>
+                        <li> <a href=""> 4. Linkedin </a> </li>
+                    </ul>
+                    <li> <a href=""> 3. Facebook </a> </li>
+                    <li> <a href=""> 4. Linkedin </a> </li>
+                </ul>
+            </li>
+            <li> <a href=""> <span class="Servic"> <i class="icon icon-briefcase"> </i> </span> Servicios </a> </li>
+            <li> <a href=""> <span class="Info"> <i class="icon icon-list"> </i> </span> Acerca de </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>
+
+
+
+
+
+<!--html>
+<header>
+    <nav>
+        <ul>
+            <li> <a href=""> <span class="Inic "> <i class="icon icon-home3"> </i> </span> Inicio </a> </li>
             <li> <a href=""> <span class="Categ"> <i class="icon icon-price-tag"> </i> </span> Categoria </a>
                 <ul>
                     <li> <a href="http://www.google.com"> 1. Google </a> </li>
@@ -33,8 +67,12 @@
             </li>
         </ul>
     </nav>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/EstiloWeb.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/EstiloBaseTemp.css') }}">
 </header>
+
 <body>
-    {% block content %} {% endblock %}
+    
 </body>
-</html>
+
+</html-->
