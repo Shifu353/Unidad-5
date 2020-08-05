@@ -1,0 +1,16 @@
+{% extends "base_template.html" %}
+{% block content %}
+
+<form class="d-flex flex-column animated fadeInDown" style="height: 100%; " action="{{ url_for('PagarPedido', pedido = pedido.NumPedido) }}" method="POST">
+    <h1 style="text-align: center;"><span class="material-icons" style="font-size: 35px;">
+    </span> Cobrar Pedido {{ pedido.NumPedido }}</h1>
+    <h2 style="text-align: center;">Total ${{ pedido.Total }}</h2>
+    <div style=" text-align: center;">
+        {% for item in pedido.item_pedido %}
+            <h3 style="font-size: 20px; ">{{ item.item_producto.Nombre }} - <span>${{ item.producto.PrecioUnitario }}</span></h3>
+        {%  endfor %}
+    </div> 
+    <button type="submit" class="boton gradiente align-self-center" id="confirmar" >Confirmar cobro</button>
+</form>
+
+{% endblock %}
