@@ -6,45 +6,27 @@
         <div class="row">
             <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 d-flex">
                 <div class="justify-content-center align-self-center w-100">
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            {% for message in messages %}
-                                    <div class="alert alert-success" role="alert" style="text-align: center;">
-                                        {{ message }}
-                                    </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
                     <h1 class="animated fadeInDown" style="text-align: center;"><span class="material-icons" style="font-size: 35px;">
-                        local_mall
-                        </span> Pedidos Vigentes</h1>
-                    
+                        </span> Pedidos Vigentes</h1>  
                     {% if pedidos %}
                     <ul class="list-group-flush listapedidos animated fadeInDown" style="overflow-y: scroll; display: block;"> 
                         {% for pedido in pedidos %}
-                                <a href="{{ url_for('cobrarpedido', pedido = pedido.numPedido ) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <a href="{{url_for('Cobrar',pedido = pedido.NumPedido)}}" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between" style="height: 33px;">
-                                        <h5 class="mb-1"> Pedido {{ pedido.numPedido }} </h5>
-                                        <h5 class="text-muted"> Mesa {{ pedido.mesa }}</h5>
+                                        <h5 class="mb-1"> Pedido {{ pedido.NumPedido }} </h5>
+                                        <h5 class="text-muted"> Mesa {{ pedido.Mesa }}</h5>
                                     </div>
-                                    {% for item in pedido.items %}
-                                            <p class="mb-1"> {{ item.producto.nombre }}</p>
+                                    {% for item in pedido.item_pedido %}
+                                            <p class="mb-1"> {{ item.item_producto.Nombre }}</p>
                                     {%  endfor %}
-                                    <small class="text-muted">Mozo {{ pedido.dnimozo }}</small>
+                                    <small class="text-muted">Mozo {{ pedido.DniMozo }}</small>
                                 </a>
                                 {% endfor %}
                     </ul>
                     {% else %}
-                            <h1 style="text-align: center; font-size: 30px;">No se han encontrado <br> pedidos pendientes <span>:(</span></h1>
+                            <h1 style="text-align: center; font-size: 30px;">No se han encontrado pedidos pendientes</h1>
                     {% endif %}
                 </div>
-            </div>
-            <div  class="col-xl-5 col-lg-5 col-md-12 d-none d-md-block" style="padding:86px 0 ; z-index: -1; filter: brightness(78%);">
-                <div  class="d-lg-none">
-                    <div  class="mt-4">&nbsp;</div>
-                </div>
-                <figure  class="mt-0"><img  alt="" class="imgfull"
-                        src=" {{ url_for('static', filename='img/pedidos2.jpg') }}"></figure>
             </div>
         </div>
     </div>
