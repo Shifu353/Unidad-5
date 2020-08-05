@@ -1,34 +1,33 @@
 {% extends "base_template.html" %}
-{% block title %} Ingreso {% endblock %}
 {% block content %}
-<div style="width: 50%; margin: auto;">
+<div style="width: 70%; margin: auto;">
     <h1 style="text-align: center; padding: 2rem;">
         Pedidos Pendientes
     </h1>
-    <ul class="list-group-flush" style="overflow-y: scroll; display: block; height: 200px; max-height: 200px;">
+    <ul class="list-group-flush" style="overflow-y: scroll; display: block; height: 500px; max-height: 700px;">
         {% if pedidos %}
         {% for pedido in pedidos %}
-        <li style="width: 50%; margin: auto;">
-            <div class="d-flex w-100 justify-content-between pedido" style="height: 33px;">
-                <h5> Pedido {{ pedido.NumPedido }} </h5>
-                <h5> Mesa {{ pedido.Mesa }} </h5>
-            </div>
-            
-            {% for item in pedido.item_pedido %}
-            <p> Nombre: {{ item.item_producto.Nombre }} 
-                Numero de item:{{ item.NumItem }}
-            </p>
-            {%  endfor %}
+        <div style="padding: 1rem; background-color: cornsilk;">
+            <li style="width: 90%; margin: auto;">
+                <label> N° Pedido: {{pedido.NumPedido}} </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label> Mesa N°: {{pedido.Mesa}} </label>
+                <br>
+                <label> Observaciones: &nbsp;{{pedido.Observacion}} </label>
+                <div style="padding: 1rem; background-color: rgba(240, 230, 140, 0.523);">
+                    <label for=""> Nombre --> Estado </label>
+                    <br>
+                    {% for item in pedido.item_pedido %}
+                        <!-- {% if item.NumPedido == pedido.NumPedido %} -->
+                        <a href="{{ url_for('Cocinero',numpedido = item.NumItem)}}"> {{ item.item_producto.Nombre }} --> {{ item.Estado }}</a>
+                        <br>
+                        <!-- {% endif %} -->
+                    {%  endfor %}
+                </div>
+            </li>
+        </div>
+        <br>
+        {%  endfor %}
 
-            {% if pedido.Observacion != "" %}<small>Observacíon:
-                {{ pedido.Observacion }}</small>
-            {% else %}
-            ---Sin Observacion---
-            {% endif %}
-
-            <small>Mozo {{ pedido.DniMozo }}</small>
-        </li>
-        {% endfor %}
         {% else %}
         <li class="list-group-item" style="height: 150px; min-height: 100px; max-height: 200px;">
             <h1 style="text-align: center; font-size: 2rem;">No se han encontrado pedidos pendientes</h1>
@@ -38,12 +37,5 @@
     <br>
     <br>
     <br>
-        <form action="" method="POST">
-            <div class="modal-footer">
-                <button type="button" style="color: #000000; font-family: 'Montserrat', sans-serif; background-color: #ed1414;"> Cancelar</button>
-                <button type="submit" style="color: #000000; font-family: 'Montserrat', sans-serif; background-color: #14ed43;">Listo</button>
-            </div>
-        </form>
-    </div>
 </div>
 {% endblock %}
