@@ -12,9 +12,9 @@ class Usuarios(basedatos.Model):
     pedido_cargado = basedatos.relationship('Pedidos',backref='usuarios',cascade="all, delete-orphan",lazy='dynamic')
 
 class Pedidos(basedatos.Model):
-    __tablename__ = "pedidos"
+    __tablename__ = 'pedidos'
     NumPedido= basedatos.Column(basedatos.Integer,primary_key=True)
-    Fecha= basedatos.Column(basedatos.DateTime,nullable=False)
+    Fecha= basedatos.Column(basedatos.Date,nullable=False)
     Total= basedatos.Column(basedatos.Float,nullable=False)
     Cobrado= basedatos.Column(basedatos.String(22),nullable=False)
     Observacion=basedatos.Column(basedatos.Text)
@@ -31,9 +31,8 @@ class ItemsPedidos(basedatos.Model):
     Estado=basedatos.Column(basedatos.String(50),nullable=False)
     item_producto=basedatos.relationship('Productos',backref='itempedidos')
 
-class Productos(basedatos.Model):
+class Productos (basedatos.Model):
     __tablename__="productos"
     NumProducto= basedatos.Column(basedatos.Integer,primary_key=True)
     Nombre= basedatos.Column(basedatos.String(120),nullable=False)
     PrecioUnitario= basedatos.Column(basedatos.Float,nullable=False)
-    
