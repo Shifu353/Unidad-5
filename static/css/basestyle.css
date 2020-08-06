@@ -1,0 +1,41 @@
+header{
+    width:100%;
+    padding: 2rem;
+	background-color: rgba(0, 0, 0, 0.753);
+}
+
+.inicio{
+    line-height: 1;
+	position: relative;
+	z-index: 1;
+	border-radius: 5%;
+	margin-right: 0;
+	background-color: rgb(4, 69, 219);
+	color: white;
+	padding: 1rem;
+}
+.out{
+    line-height: 1;
+    position: relative;
+	z-index: 1;
+    border-radius: 5%;
+    margin-left: 75%;
+	margin-right: 0;
+	background-color: rgb(219, 4, 4);
+    color: white;
+    padding: 1rem;
+}
+.inicio:hover{
+    line-height: 1;
+    background-color: rgb(41, 95, 223);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.417);
+}
+.out:hover{
+    line-height: 1;
+	background-color: rgb(240, 34, 34);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.417);
+}
+
+.out span,.inicio span{
+    font-size: 125%;
+}
