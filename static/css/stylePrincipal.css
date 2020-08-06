@@ -1,0 +1,18 @@
+.funciones{
+    margin-top: 3rem;
+    margin-left: 10%;
+    width: 90%;
+}
+.funciones > ul li {
+    list-style: none;
+    width: 40%; 
+    padding: 2%;
+    margin-left: 50%; 
+    margin: 2%;
+    background-color: teal;
+    border-radius: 3%;
+}
+.funciones > ul li:hover{
+    background-color: rgb(13, 212, 212);    
+    
+}
